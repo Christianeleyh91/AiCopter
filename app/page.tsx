@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const team = [
   ['کریستیان ایلیه بابرودی', 'Christian Eleyh Babrudy', './team/christian-uniform.webp'],
@@ -45,7 +45,6 @@ const tech = [
 export default function Home() {
   const [fa, setFa] = useState(true);
   const [light, setLight] = useState(false);
-  const [chatInput, setChatInput] = useState('');
   const [typing, setTyping] = useState(false);
   const [messages, setMessages] = useState<Array<{ role: 'bot' | 'user'; faText: string; enText: string }>>([
     {
@@ -102,7 +101,6 @@ export default function Home() {
       faText: match ? match[0] : question,
       enText: match ? match[1] : question,
     }]);
-    setChatInput('');
     setTyping(true);
     window.setTimeout(() => {
       setMessages(current => [...current, {
@@ -112,11 +110,6 @@ export default function Home() {
       }]);
       setTyping(false);
     }, 480);
-  };
-
-  const sendMessage = (event: FormEvent) => {
-    event.preventDefault();
-    askQuestion(chatInput);
   };
 
   return <main>
@@ -176,13 +169,13 @@ export default function Home() {
           <h3>SIMORGH ASSISTANT</h3>
           <p>{t('دستیار تخصصی تشخیص چهره و پرواز خودمختار','Face intelligence & autonomous flight specialist')}</p>
           <div className="assistant-badges"><span>● {t('آنلاین','ONLINE')}</span><span>{t('دانش محلی','LOCAL KNOWLEDGE')}</span><span>FA / EN</span></div>
-          <div className="assistant-note"><b>{t('بدون محدودیت موضوعی','OPEN CONVERSATION')}</b><span>{t('سؤال خودت را آزادانه بنویس؛ پیشنهادها فقط نقطه شروع هستند.','Type your own question freely. Suggestions are only a starting point.')}</span></div>
+          <div className="assistant-note"><b>{t('موضوع‌های تخصصی','EXPERT TOPICS')}</b><span>{t('یکی از پانزده پرسش را انتخاب کن تا پاسخ دقیق و دوزبانه را ببینی.','Choose one of fifteen questions for a precise bilingual answer.')}</span></div>
         </aside>
         <div className="chat-main">
           <div className="chat-topbar"><div><i/><b>{t('دستیار آماده پاسخ‌گویی است','Assistant is ready')}</b></div><span>{t(`${faq.length} موضوع تخصصی`,`${faq.length} expert topics`)}</span></div>
           <div className="chat-messages" aria-live="polite">
             <div className="topic-launcher">
-              <div><span>✦</span><b>{t('از کجا شروع کنیم؟','Where should we start?')}</b><small>{t('یک موضوع را انتخاب کن یا سؤال خودت را پایین بنویس','Choose a topic or type anything below')}</small></div>
+              <div><span>✦</span><b>{t('از کجا شروع کنیم؟','Where should we start?')}</b><small>{t('یک پرسش تخصصی را انتخاب کن','Choose an expert question')}</small></div>
               <div className="suggestions">
                 {[
                   t('Liveness چطور کار می‌کند؟','How does liveness work?'),
@@ -198,16 +191,15 @@ export default function Home() {
                   t('\u2066YuNet\u2069 و \u2066SFace\u2069 دقیقاً چه کاری انجام می‌دهند؟','What exactly do YuNet and SFace do?'),
                   t('محدودیت‌های فعلی پروژه چیست؟','What are the project’s current limitations?'),
                   t('اعضای تیم چه کسانی هستند؟','Who are the team members?'),
+                  t('RPC چگونه پایتون را به Unreal متصل می‌کند؟','How does RPC connect Python to Unreal?'),
+                  t('تصویر Scene و Depth چه تفاوتی دارند؟','How do Scene and Depth images differ?'),
                 ].map(question => <button key={question} onClick={() => askQuestion(question)}><span>↗</span>{question}</button>)}
               </div>
             </div>
             {messages.map((message, index) => { const text = fa ? message.faText : message.enText; const direction = textDirection(text); return <div ref={message.role === 'user' ? latestUserMessage : undefined} className={`chat-message ${message.role}`} key={`${message.role}-${index}`}><span className="message-icon">{message.role === 'bot' ? 'AI' : t('شما','YOU')}</span><div><small dir={direction}>{message.role === 'bot' ? 'SIMORGH' : t('شما','YOU')}</small><p dir={direction} lang={direction === 'rtl' ? 'fa' : 'en'}>{text}</p></div></div>; })}
             {typing && <div className="chat-message bot"><span className="message-icon">AI</span><div><small>SIMORGH</small><p className="typing-dots"><i/><i/><i/></p></div></div>}
           </div>
-          <form className="chat-form" onSubmit={sendMessage}>
-            <div><input dir="auto" value={chatInput} onChange={event => setChatInput(event.target.value)} placeholder={t('مثلاً: تفاوت نسخهٔ وب‌کم و Unreal چیست؟','For example: How does obstacle avoidance work?')} aria-label={t('سؤال از دستیار پروژه','Ask the project assistant')}/><button type="submit" disabled={!chatInput.trim() || typing}>{t('ارسال','SEND')}<span>↗</span></button></div>
-            <p><i>◆</i>{t('پاسخ‌ها داخل مرورگر تولید می‌شوند و هیچ پرسشی ارسال یا ذخیره نمی‌شود.','Answers are generated in your browser; no question is transmitted or stored.')}</p>
-          </form>
+          <div className="chat-footnote"><i>◆</i>{t('پاسخ‌ها داخل مرورگر نمایش داده می‌شوند و هیچ داده‌ای ارسال یا ذخیره نمی‌شود.','Answers are displayed locally in your browser; no data is transmitted or stored.')}</div>
         </div>
       </div>
     </section>
