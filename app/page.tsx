@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from 'react';
 
 const team = [
   ['کریستیان ایلیه بابرودی', 'Christian Eleyh Babrudy', './team/christian-uniform.webp'],
-  ['کریستوفر ایلیه بابرودی', 'Christopher Eleyh Babrudy', './team/christopher-3d.webp'],
+  ['کریستوفر ایلیه بابرودی', 'Christopher Eleyh Babrudy', './team/christopher-3d-v2.webp'],
   ['آراد دباغی', 'Arad Dabaghi', './team/arad-3d.webp'],
   ['مهراد توفیقی', 'Mehrad Tofighi', './team/mehrad-3d.webp'],
   ['آرکان محمدی', 'Arkan Mohammadi', './team/arkan-3d.webp'],
