@@ -3,11 +3,11 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 
 const team = [
-  ['کریستیان ایلیه بابرودی', 'Christianeley Babroudi', './team/christian-3d.png'],
-  ['کریستوفر ایلیه بابرودی', 'Christopher Eley Babroudi', './team/christopher-3d.png'],
-  ['آراد دباغی', 'Arad Dabbaghi', './team/arad-3d.png'],
-  ['مهراد توفیقی', 'Mehrad Tofighi', './team/mehrad-3d.png'],
-  ['آرکان محمدی', 'Arkan Mohammadi', './team/arkan-3d.png'],
+  ['کریستیان ایلیه بابرودی', 'Christianeley Babroudi', './team/christian-3d.webp'],
+  ['کریستوفر ایلیه بابرودی', 'Christopher Eley Babroudi', './team/christopher-3d.webp'],
+  ['آراد دباغی', 'Arad Dabbaghi', './team/arad-3d.webp'],
+  ['مهراد توفیقی', 'Mehrad Tofighi', './team/mehrad-3d.webp'],
+  ['آرکان محمدی', 'Arkan Mohammadi', './team/arkan-3d.webp'],
 ];
 
 const faq = [
