@@ -183,11 +183,11 @@ export default function Home() {
                 ].map(question => <button key={question} onClick={() => askQuestion(question)}><span>↗</span>{question}</button>)}
               </div>
             </div>
-            {messages.map((message, index) => <div ref={message.role === 'user' ? latestUserMessage : undefined} className={`chat-message ${message.role}`} key={`${message.role}-${index}`}><span className="message-icon">{message.role === 'bot' ? 'AI' : t('شما','YOU')}</span><div><small>{message.role === 'bot' ? 'SIMORGH' : t('شما','YOU')}</small><p>{message.text}</p></div></div>)}
+            {messages.map((message, index) => <div ref={message.role === 'user' ? latestUserMessage : undefined} className={`chat-message ${message.role}`} key={`${message.role}-${index}`}><span className="message-icon">{message.role === 'bot' ? 'AI' : t('شما','YOU')}</span><div><small dir={fa ? 'rtl' : 'ltr'}>{message.role === 'bot' ? 'SIMORGH' : t('شما','YOU')}</small><p dir={fa ? 'rtl' : 'ltr'} lang={fa ? 'fa' : 'en'}>{message.text}</p></div></div>)}
             {typing && <div className="chat-message bot"><span className="message-icon">AI</span><div><small>SIMORGH</small><p className="typing-dots"><i/><i/><i/></p></div></div>}
           </div>
           <form className="chat-form" onSubmit={sendMessage}>
-            <div><input value={chatInput} onChange={event => setChatInput(event.target.value)} placeholder={t('مثلاً: تفاوت نسخه وب‌کم و Unreal چیست؟','For example: How does obstacle avoidance work?')} aria-label={t('سؤال از دستیار پروژه','Ask the project assistant')}/><button type="submit" disabled={!chatInput.trim() || typing}>{t('ارسال','SEND')}<span>↗</span></button></div>
+            <div><input dir={fa ? 'rtl' : 'ltr'} value={chatInput} onChange={event => setChatInput(event.target.value)} placeholder={t('مثلاً: تفاوت نسخه وب‌کم و Unreal چیست؟','For example: How does obstacle avoidance work?')} aria-label={t('سؤال از دستیار پروژه','Ask the project assistant')}/><button type="submit" disabled={!chatInput.trim() || typing}>{t('ارسال','SEND')}<span>↗</span></button></div>
             <p><i>◆</i>{t('پاسخ‌ها داخل مرورگر تولید می‌شوند و هیچ پرسشی ارسال یا ذخیره نمی‌شود.','Answers are generated in your browser; no question is transmitted or stored.')}</p>
           </form>
         </div>

@@ -5,6 +5,11 @@ export const metadata: Metadata = {
   title: 'Ai Copter | Face Intelligence & Autonomous Flight',
   description: 'A bilingual showcase of secure face recognition and autonomous drone perception in Unreal Engine.',
   metadataBase: new URL('https://ai-copter.app'),
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
   openGraph: {
     title: 'AI Copter',
     description: 'Face Intelligence × Autonomous Flight',
