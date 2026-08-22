@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 
 const team = [
-  ['کریستیان ایلیه بابرودی', 'Christianeley Babroudi', './team/christian-3d.webp'],
+  ['کریستیان ایلیه بابرودی', 'Christianeley Babroudi', './team/christian-character.png'],
   ['کریستوفر ایلیه بابرودی', 'Christopher Eley Babroudi', './team/christopher-3d.webp'],
   ['آراد دباغی', 'Arad Dabbaghi', './team/arad-3d.webp'],
   ['مهراد توفیقی', 'Mehrad Tofighi', './team/mehrad-3d.webp'],
