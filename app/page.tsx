@@ -159,19 +159,30 @@ export default function Home() {
           <h3>SIMORGH ASSISTANT</h3>
           <p>{t('دستیار تخصصی تشخیص چهره و پرواز خودمختار','Face intelligence & autonomous flight specialist')}</p>
           <div className="assistant-badges"><span>● {t('آنلاین','ONLINE')}</span><span>{t('دانش محلی','LOCAL KNOWLEDGE')}</span><span>FA / EN</span></div>
-          <b className="suggestion-title">{t('پیشنهاد برای شروع','QUICK QUESTIONS')}</b>
-          <div className="suggestions">
-            {[
-              t('Liveness چطور کار می‌کند؟','How does liveness work?'),
-              t('بعد از دیدن چهره کواد چه می‌کند؟','What happens after the drone sees a face?'),
-              t('مدل‌های پروژه کدام‌اند؟','Which models power the project?'),
-              t('امنیت اطلاعات چگونه است؟','How is identity data secured?'),
-            ].map(question => <button key={question} onClick={() => askQuestion(question)}><span>↗</span>{question}</button>)}
-          </div>
+          <div className="assistant-note"><b>{t('بدون محدودیت موضوعی','OPEN CONVERSATION')}</b><span>{t('سؤال خودت را آزادانه بنویس؛ پیشنهادها فقط نقطه شروع هستند.','Type your own question freely. Suggestions are only a starting point.')}</span></div>
         </aside>
         <div className="chat-main">
           <div className="chat-topbar"><div><i/><b>{t('دستیار آماده پاسخ‌گویی است','Assistant is ready')}</b></div><span>{t(`${faq.length} موضوع تخصصی`,`${faq.length} expert topics`)}</span></div>
           <div className="chat-messages" aria-live="polite">
+            <div className="topic-launcher">
+              <div><span>✦</span><b>{t('از کجا شروع کنیم؟','Where should we start?')}</b><small>{t('یک موضوع را انتخاب کن یا سؤال خودت را پایین بنویس','Choose a topic or type anything below')}</small></div>
+              <div className="suggestions">
+                {[
+                  t('Liveness چطور کار می‌کند؟','How does liveness work?'),
+                  t('کواد بعد از دیدن چهره چه می‌کند؟','What does the drone do after seeing a face?'),
+                  t('مدل‌های هوش مصنوعی پروژه کدام‌اند؟','Which AI models power the project?'),
+                  t('امنیت اطلاعات هویتی چگونه است؟','How is identity data secured?'),
+                  t('نسخه وب‌کم و Unreal چه تفاوتی دارند؟','How do the webcam and Unreal builds differ?'),
+                  t('ثبت یک هویت جدید چگونه انجام می‌شود؟','How is a new identity enrolled?'),
+                  t('Depth چطور مانع برخورد می‌شود؟','How does Depth prevent collisions?'),
+                  t('رأی زمانی چه مشکلی را حل می‌کند؟','What problem does temporal voting solve?'),
+                  t('سرعت حرکت کواد چگونه تنظیم می‌شود؟','How is drone speed configured?'),
+                  t('YuNet و SFace دقیقاً چه می‌کنند؟','What exactly do YuNet and SFace do?'),
+                  t('محدودیت‌های فعلی پروژه چیست؟','What are the project’s current limitations?'),
+                  t('اعضای تیم چه کسانی هستند؟','Who are the team members?'),
+                ].map(question => <button key={question} onClick={() => askQuestion(question)}><span>↗</span>{question}</button>)}
+              </div>
+            </div>
             {messages.map((message, index) => <div className={`chat-message ${message.role}`} key={`${message.role}-${index}`}><span className="message-icon">{message.role === 'bot' ? 'AI' : t('شما','YOU')}</span><div><small>{message.role === 'bot' ? 'SIMORGH' : t('شما','YOU')}</small><p>{message.text}</p></div></div>)}
             {typing && <div className="chat-message bot"><span className="message-icon">AI</span><div><small>SIMORGH</small><p className="typing-dots"><i/><i/><i/></p></div></div>}
             <div ref={messagesEnd}/>
@@ -184,7 +195,7 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="final"><div className="shell"><span>{t('پروژه پژوهشی هوش مصنوعی','AN AI RESEARCH PROJECT')}</span><h2>{t('وقتی دیدن، فهمیدن و حرکت‌کردن به یک سامانه تبدیل می‌شوند.','Where seeing, understanding, and moving become one system.')}</h2><a className="primary" href="#top">{t('بازگشت به آغاز','Back to the top')} ↑</a></div></section>
+    <section className="final"><div className="shell"><span>{t('پروژه پژوهشی هوش مصنوعی','AN AI RESEARCH PROJECT')}</span><h2>{t('وقتی دیدن، فهمیدن و حرکت‌کردن به یک سامانه تبدیل می‌شوند.','Where seeing, understanding, and moving become one system.')}</h2><a className="primary back-to-top" href="#top">{t('بازگشت به آغاز','Back to the top')} ↑</a></div></section>
     <footer className="shell"><div className="brand"><span className="brand-mark"><b>AI</b></span><span><strong>AI COPTER</strong><small>2026 RESEARCH PROJECT</small></span></div><p>{t('ساخته‌شده با مسئولیت، رضایت و پردازش محلی.','Built with responsibility, consent, and local-first processing.')}</p><b>ALLAMEH HELLI 5</b></footer>
   </main>;
 }
