@@ -14,6 +14,7 @@ const faq = [
   ['هدف اصلی پروژه چیست؟', 'What is the project’s main goal?', 'هدف Ai Copter ساخت یک زنجیرهٔ یکپارچه از دریافت تصویر تا تصمیم حرکتی است. سامانه ابتدا کیفیت تصویر و وجود چهره را بررسی می‌کند، سپس هویت را با نمونه‌های ثبت‌شده می‌سنجد و در نسخهٔ وب‌کم، زنده‌بودن فرد را نیز ارزیابی می‌کند. نسخهٔ شبیه‌سازی همین ادراک را به کنترل کواد، رهگیری هدف و اجتناب از مانع در Unreal Engine متصل می‌سازد.', 'Ai Copter builds an end-to-end pipeline from image acquisition to motion decisions. It validates image quality, detects a face, compares its identity with enrolled templates, and—on the webcam build—checks liveness. The simulation build connects that perception to target tracking, quadrotor control, and obstacle avoidance in Unreal Engine.'],
   ['چرا دو نسخه ساخته شده است؟', 'Why are there two versions?', 'دو نسخه یک هستهٔ مشترک تشخیص چهره دارند، اما برای دو مسئلهٔ متفاوت بهینه شده‌اند. نسخهٔ وب‌کم با انسان واقعی، کنترل کیفیت سخت‌گیرانه، ثبت رمزگذاری‌شده و آزمون Liveness سروکار دارد؛ نسخهٔ Unreal تصاویر رندرشده را از Cosys-AirSim می‌گیرد و نتیجهٔ تشخیص را به فرمان پرواز تبدیل می‌کند. جداکردن این دو مسیر، پیچیدگی غیرضروری و تصمیم‌های امنیتی نامرتبط را حذف می‌کند.', 'Both builds share the same recognition concept but are optimized for different problems. The webcam build handles real people, strict quality gates, encrypted enrollment, and liveness; the Unreal build receives rendered imagery through Cosys-AirSim and converts recognition into flight commands. Separating them avoids irrelevant security checks and unnecessary complexity.'],
   ['YuNet و SFace چه می‌کنند؟', 'What do YuNet and SFace do?', 'YuNet آشکارساز چهره است: کادر چهره، امتیاز اطمینان و پنج نقطهٔ کلیدی مانند چشم‌ها و گوشه‌های دهان را برمی‌گرداند. این نقاط برای هم‌ترازکردن چهره استفاده می‌شوند. سپس SFace تصویر هم‌تراز را به یک بردار عددی یا embedding تبدیل می‌کند؛ شباهت این بردار با templateهای ثبت‌شده، مبنای تصمیم Known یا Unknown است.', 'YuNet is the face detector: it returns a bounding box, detection score, and five facial landmarks such as the eyes and mouth corners. Those landmarks align the face. SFace then converts the aligned crop into a numerical embedding; similarity against enrolled templates determines whether the result is a known identity or Unknown.'],
+  ['Liveness چگونه کار می‌کند؟', 'How does liveness work?', 'در نسخهٔ وب‌کم، Liveness یک ماشین حالت فعال و زمان‌مند است که با landmarkهای چهره کار می‌کند. ابتدا سامانه چند فریم پایدار را برای تعیین وضعیت پایه جمع‌آوری می‌کند؛ سپس کاربر باید یک پلک کامل بزند و سر را در جهت خواسته‌شده بچرخاند. پلک با کاهش و بازیابی نسبت بازشدگی چشم‌ها تشخیص داده می‌شود و چرخش سر از تغییر هندسی landmarkها نسبت به حالت پایه برآورد می‌گردد. هر مرحله باید با ترتیب درست، دامنهٔ کافی و در بازهٔ زمانی مشخص انجام شود؛ در غیر این صورت چالش Reset یا Timeout می‌شود. پس از تکمیل تمام مراحل، وضعیت Liveness passed ثبت می‌شود و نتیجه به Timeout برنمی‌گردد. این روش برای مقابله با عکس ثابت طراحی شده، اما جایگزین حسگر عمق یا مدل تخصصی ضدجعل در کاربردهای پرخطر نیست.', 'In the webcam build, liveness is an active, time-bounded state machine driven by facial landmarks. The system first collects stable frames to establish a baseline; the user must then complete a full blink and turn their head in the requested direction. A blink is detected from the drop and recovery of eye-opening ratios, while head rotation is estimated from landmark geometry relative to the baseline. Every stage must occur in the correct order, with sufficient amplitude, and within its time window; otherwise the challenge resets or times out. After all stages complete, Liveness passed becomes a terminal success state and does not later change to Timeout. This approach is designed to resist static-photo attacks, but it does not replace depth sensing or a dedicated anti-spoofing model in high-risk applications.'],
   ['آیا Liveness ضدجعل کامل است؟', 'Is liveness completely spoof-proof?', 'خیر. Liveness این پروژه یک آزمون فعال مبتنی بر پلک‌زدن و چرخش جهت‌دار سر است و عمدتاً حمله با عکس ثابت را دشوار می‌کند. ویدئوی بازپخش‌شده، ماسک پیشرفته یا جعل سه‌بعدی ممکن است به کنترل‌های قوی‌تری نیاز داشته باشد؛ بنابراین در کاربردهای حساس باید حسگر عمق یا مادون‌قرمز، مدل تخصصی ضدجعل و سیاست چندعاملی نیز اضافه شود.', 'No. This project uses active liveness challenges based on blinking and directed head turns, which mainly resist static-photo attacks. Replayed video, sophisticated masks, or 3D spoofs may require stronger controls; high-risk deployments should add depth or infrared sensing, a dedicated anti-spoofing model, and multi-factor policy.'],
   ['چرا Liveness در Unreal وجود ندارد؟', 'Why is liveness absent in Unreal?', 'هدف نسخهٔ Unreal شناسایی کاراکتر رندرشده و کنترل کواد است، نه اثبات حضور یک انسان زنده. کاراکتر می‌تواند انیمیشن پلک یا چرخش سر داشته باشد، اما این رفتار در شبیه‌ساز نشانهٔ زیستی محسوب نمی‌شود و امنیت واقعی ایجاد نمی‌کند. به همین دلیل Liveness عمداً حذف شده تا پردازش و منطق مأموریت روی ادراک، رهگیری و ایمنی پرواز متمرکز بماند.', 'The Unreal build identifies rendered characters and controls a quadrotor; it does not prove that a living human is present. A character may animate a blink or head turn, but that is not biological evidence and adds no real security. Liveness is therefore intentionally removed so computation and mission logic remain focused on perception, tracking, and flight safety.'],
   ['اگر دو هویت نزدیک باشند چه می‌شود؟', 'What happens when two identities are close?', 'سامانه فقط بالاترین شباهت را قبول نمی‌کند. امتیاز بهترین نامزد باید از Threshold عبور کند و هم‌زمان فاصلهٔ آن با نامزد دوم از ambiguity margin بیشتر باشد. اگر دو نفر بیش از حد نزدیک باشند، نتیجه عمداً Unknown باقی می‌ماند؛ این سیاست احتمال پذیرش اشتباه را به قیمت افزایش رد محافظه‌کارانه کاهش می‌دهد.', 'The system does not accept the highest score blindly. The best candidate must pass the absolute threshold and remain sufficiently ahead of the runner-up according to the ambiguity margin. If two identities are too close, the result deliberately stays Unknown, reducing false acceptance at the cost of more conservative rejection.'],
@@ -45,8 +46,12 @@ export default function Home() {
   const [light, setLight] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const [typing, setTyping] = useState(false);
-  const [messages, setMessages] = useState<Array<{ role: 'bot' | 'user'; text: string }>>([
-    { role: 'bot', text: 'سلام! من دستیار تخصصی Ai Copter هستم. درباره تشخیص چهره، Liveness، Unreal، کواد، مدل‌ها، سرعت، ایمنی یا اعضای تیم از من سؤال کن.' },
+  const [messages, setMessages] = useState<Array<{ role: 'bot' | 'user'; faText: string; enText: string }>>([
+    {
+      role: 'bot',
+      faText: 'سلام! من دستیار تخصصی Ai Copter هستم. دربارهٔ تشخیص چهره، Liveness، Unreal، کواد، مدل‌ها، سرعت، ایمنی یا اعضای تیم از من سؤال کن.',
+      enText: 'Hello! I am the Ai Copter project assistant. Ask me about face recognition, liveness, Unreal, the quadrotor, AI models, speed control, safety, or the team.',
+    },
   ]);
   const latestUserMessage = useRef<HTMLDivElement>(null);
   const [menu, setMenu] = useState(false);
@@ -64,36 +69,46 @@ export default function Home() {
   const t = (persian: string, english: string) => fa ? persian : english;
   const textDirection = (text: string): 'rtl' | 'ltr' => /[\u0600-\u06FF]/.test(text) ? 'rtl' : 'ltr';
 
-  const findAnswer = (question: string) => {
+  const findMatch = (question: string) => {
     const normalized = question.toLowerCase()
-      .replace(/زنده[‌\s-]*بودن|لایونس/g, 'liveness')
+      .replace(/زنده[‌\s-]*بودن|لایونس|لایونز|لایبنیز|لایفنس/g, 'liveness')
       .replace(/پهپاد/g, 'کواد')
       .replace(/ایر[‌\s-]*سیم/g, 'airsim')
       .replace(/آنریل/g, 'unreal')
       .replace(/[^\p{L}\p{N}\s]/gu, ' ');
-    const stopWords = new Set(['این','اون','برای','چرا','چطور','چگونه','چیست','است','هست','های','the','and','what','how','why','does','is','are','about']);
+    const stopWords = new Set(['این','اون','برای','چرا','چطور','چگونه','چیست','است','هست','های','کند','میکند','می‌کند','the','and','what','how','why','does','is','are','about','work','works']);
     const tokens = normalized.split(/\s+/).filter(word => word.length > 2 && !stopWords.has(word));
     let bestScore = 0;
-    let best = faq[0];
+    let best: typeof faq[number] | null = null;
     for (const item of faq) {
-      const searchable = `${item[0]} ${item[1]} ${item[2]} ${item[3]}`.toLowerCase();
-      const score = tokens.reduce((total, token) => total + (searchable.includes(token) ? (item[0].toLowerCase().includes(token) || item[1].toLowerCase().includes(token) ? 3 : 1) : 0), 0);
+      const searchable = `${item[0]} ${item[1]}`.toLowerCase()
+        .replace(/زنده[‌\s-]*بودن|لایونس|لایونز|لایبنیز|لایفنس/g, 'liveness')
+        .replace(/ایر[‌\s-]*سیم/g, 'airsim')
+        .replace(/آنریل/g, 'unreal');
+      const score = tokens.reduce((total, token) => total + (searchable.includes(token) ? 4 : 0), 0)
+        + (searchable.includes(normalized.trim()) ? 8 : 0);
       if (score > bestScore) { bestScore = score; best = item; }
     }
-    if (bestScore === 0) return fa
-      ? 'این سؤال را دقیق‌تر و با یکی از موضوع‌های پروژه بپرس: Webcam، ثبت هویت، Liveness، YuNet، SFace، Threshold، Unreal، RPC، Depth، سرعت کواد، اجتناب از مانع، امنیت، ارزیابی یا اعضای تیم.'
-      : 'Please make the question more specific using a project topic: webcam, enrollment, liveness, YuNet, SFace, threshold, Unreal, RPC, depth, drone speed, obstacle avoidance, security, evaluation, or the team.';
-    return fa ? best[2] : best[3];
+    return bestScore > 0 ? best : null;
   };
 
   const askQuestion = (value: string) => {
     const question = value.trim();
     if (!question || typing) return;
-    setMessages(current => [...current, { role: 'user', text: question }]);
+    const match = findMatch(question);
+    setMessages(current => [...current, {
+      role: 'user',
+      faText: match ? match[0] : question,
+      enText: match ? match[1] : question,
+    }]);
     setChatInput('');
     setTyping(true);
     window.setTimeout(() => {
-      setMessages(current => [...current, { role: 'bot', text: findAnswer(question) }]);
+      setMessages(current => [...current, {
+        role: 'bot',
+        faText: match ? match[2] : 'سؤال را با یک موضوع مشخص‌تر مطرح کن؛ برای نمونه Liveness، ثبت هویت، YuNet، SFace، Unreal، RPC، Depth، سرعت کواد، امنیت داده یا ارزیابی علمی.',
+        enText: match ? match[3] : 'Please include a more specific project topic—for example liveness, enrollment, YuNet, SFace, Unreal, RPC, depth, drone speed, data security, or scientific evaluation.',
+      }]);
       setTyping(false);
     }, 480);
   };
@@ -184,7 +199,7 @@ export default function Home() {
                 ].map(question => <button key={question} onClick={() => askQuestion(question)}><span>↗</span>{question}</button>)}
               </div>
             </div>
-            {messages.map((message, index) => { const direction = textDirection(message.text); return <div ref={message.role === 'user' ? latestUserMessage : undefined} className={`chat-message ${message.role}`} key={`${message.role}-${index}`}><span className="message-icon">{message.role === 'bot' ? 'AI' : t('شما','YOU')}</span><div><small dir={direction}>{message.role === 'bot' ? 'SIMORGH' : t('شما','YOU')}</small><p dir={direction} lang={direction === 'rtl' ? 'fa' : 'en'}>{message.text}</p></div></div>; })}
+            {messages.map((message, index) => { const text = fa ? message.faText : message.enText; const direction = textDirection(text); return <div ref={message.role === 'user' ? latestUserMessage : undefined} className={`chat-message ${message.role}`} key={`${message.role}-${index}`}><span className="message-icon">{message.role === 'bot' ? 'AI' : t('شما','YOU')}</span><div><small dir={direction}>{message.role === 'bot' ? 'SIMORGH' : t('شما','YOU')}</small><p dir={direction} lang={direction === 'rtl' ? 'fa' : 'en'}>{text}</p></div></div>; })}
             {typing && <div className="chat-message bot"><span className="message-icon">AI</span><div><small>SIMORGH</small><p className="typing-dots"><i/><i/><i/></p></div></div>}
           </div>
           <form className="chat-form" onSubmit={sendMessage}>
