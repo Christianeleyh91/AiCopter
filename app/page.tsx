@@ -3,11 +3,11 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 
 const team = [
-  ['کریستیان ایلیه بابرودی', 'Christianeley Babroudi'],
-  ['کریستوفر ایلیه بابرودی', 'Christopher Eley Babroudi'],
-  ['آراد دباغی', 'Arad Dabbaghi'],
-  ['مهراد توفیقی', 'Mehrad Tofighi'],
-  ['آرکان محمدی', 'Arkan Mohammadi'],
+  ['کریستیان ایلیه بابرودی', 'Christianeley Babroudi', './team/christian-3d.png'],
+  ['کریستوفر ایلیه بابرودی', 'Christopher Eley Babroudi', './team/christopher-3d.png'],
+  ['آراد دباغی', 'Arad Dabbaghi', './team/arad-3d.png'],
+  ['مهراد توفیقی', 'Mehrad Tofighi', './team/mehrad-3d.png'],
+  ['آرکان محمدی', 'Arkan Mohammadi', './team/arkan-3d.png'],
 ];
 
 const faq = [
@@ -48,7 +48,7 @@ export default function Home() {
   const [messages, setMessages] = useState<Array<{ role: 'bot' | 'user'; text: string }>>([
     { role: 'bot', text: 'سلام! من دستیار تخصصی Ai Copter هستم. درباره تشخیص چهره، Liveness، Unreal، کواد، مدل‌ها، سرعت، ایمنی یا اعضای تیم از من سؤال کن.' },
   ]);
-  const messagesEnd = useRef<HTMLDivElement>(null);
+  const latestUserMessage = useRef<HTMLDivElement>(null);
   const [menu, setMenu] = useState(false);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function Home() {
   }, [fa, light]);
 
   useEffect(() => {
-    messagesEnd.current?.scrollIntoView({ behavior: 'smooth' });
+    latestUserMessage.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [messages, typing]);
 
   const t = (persian: string, english: string) => fa ? persian : english;
@@ -124,7 +124,7 @@ export default function Home() {
       </div>
     </section>
 
-    <div className="ticker"><div>{[...tech,...tech].map((x,i)=><span key={i}>{x[0]}<i>✦</i></span>)}</div></div>
+    <div className="ticker"><div>{[...tech,...tech,...tech,...tech].map((x,i)=><span key={i}>{x[0]}<i>✦</i></span>)}</div></div>
 
     <section id="projects" className="section shell"><header className="section-head"><div><span>01 / SYSTEMS</span><h2>{t('یک هسته هوشمند؛ دو جهان متفاوت','One intelligent core. Two different worlds.')}</h2></div><p>{t('معماری مشترک، متناسب‌شده با نیازهای امنیتی و عملیاتی هر محیط.','A shared architecture, adapted to the security and operational needs of each environment.')}</p></header>
       <div className="project-grid">
@@ -149,7 +149,7 @@ export default function Home() {
 
     <section className="section shell"><header className="section-head"><div><span>03 / TECHNOLOGY</span><h2>{t('فناوری‌هایی که سامانه را زنده می‌کنند','Technology that brings the system to life')}</h2></div></header><div className="tech-grid">{tech.map((x,i)=><article key={x[0]}><span>0{i+1}</span><h3>{x[0]}</h3><p>{x[1]}</p></article>)}</div></section>
 
-    <section id="team" className="section team-section"><div className="shell"><header className="section-head"><div><span>04 / THE TEAM</span><h2>{t('پنج ذهن؛ یک مأموریت','Five minds. One mission.')}</h2></div><p>{t('دبیرستان دوره اول علامه حلی ۵','Allameh Helli 5 Junior High School')}<br/>{t('با راهنمایی استاد فلاح و استاد موحد','Mentored by Mr. Fallah and Mr. Movahed')}</p></header><div className="team-grid">{team.map((x,i)=><article key={x[0]}><div className="avatar">{String(i+1).padStart(2,'0')}<span/></div><h3>{fa?x[0]:x[1]}</h3><p>{t('پژوهشگر و توسعه‌دهنده','Researcher & Developer')}</p></article>)}</div></div></section>
+    <section id="team" className="section team-section"><div className="shell"><header className="section-head"><div><span>04 / THE TEAM</span><h2>{t('پنج ذهن؛ یک مأموریت','Five minds. One mission.')}</h2></div><p>{t('دبیرستان دوره اول علامه حلی ۵','Allameh Helli 5 Junior High School')}<br/>{t('با راهنمایی استاد فلاح و استاد موحد','Mentored by Mr. Fallah and Mr. Movahed')}</p></header><div className="team-grid">{team.map((x,i)=><article key={x[0]}><div className="avatar"><img src={x[2]} alt={fa?`پرتره سه‌بعدی ${x[0]}`:`3D portrait of ${x[1]}`}/><b>{String(i+1).padStart(2,'0')}</b><span/></div><h3>{fa?x[0]:x[1]}</h3><p>{t('پژوهشگر و توسعه‌دهنده','Researcher & Developer')}</p></article>)}</div></div></section>
 
     <section id="faq" className="section shell ai-chat-section">
       <header className="section-head chat-heading"><div><span>05 / AI PROJECT ASSISTANT</span><h2>{t('هر چیزی درباره پروژه می‌خواهی بپرس','Ask anything about the project')}</h2></div><p>{t('یک دستیار دو‌زبانه با دانش تخصصی Ai Copter؛ سریع، محلی و خصوصی.','A bilingual assistant with specialized Ai Copter knowledge—fast, local, and private.')}</p></header>
@@ -183,9 +183,8 @@ export default function Home() {
                 ].map(question => <button key={question} onClick={() => askQuestion(question)}><span>↗</span>{question}</button>)}
               </div>
             </div>
-            {messages.map((message, index) => <div className={`chat-message ${message.role}`} key={`${message.role}-${index}`}><span className="message-icon">{message.role === 'bot' ? 'AI' : t('شما','YOU')}</span><div><small>{message.role === 'bot' ? 'SIMORGH' : t('شما','YOU')}</small><p>{message.text}</p></div></div>)}
+            {messages.map((message, index) => <div ref={message.role === 'user' ? latestUserMessage : undefined} className={`chat-message ${message.role}`} key={`${message.role}-${index}`}><span className="message-icon">{message.role === 'bot' ? 'AI' : t('شما','YOU')}</span><div><small>{message.role === 'bot' ? 'SIMORGH' : t('شما','YOU')}</small><p>{message.text}</p></div></div>)}
             {typing && <div className="chat-message bot"><span className="message-icon">AI</span><div><small>SIMORGH</small><p className="typing-dots"><i/><i/><i/></p></div></div>}
-            <div ref={messagesEnd}/>
           </div>
           <form className="chat-form" onSubmit={sendMessage}>
             <div><input value={chatInput} onChange={event => setChatInput(event.target.value)} placeholder={t('مثلاً: تفاوت نسخه وب‌کم و Unreal چیست؟','For example: How does obstacle avoidance work?')} aria-label={t('سؤال از دستیار پروژه','Ask the project assistant')}/><button type="submit" disabled={!chatInput.trim() || typing}>{t('ارسال','SEND')}<span>↗</span></button></div>
