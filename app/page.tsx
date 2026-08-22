@@ -7,7 +7,7 @@ const team = [
   ['کریستوفر ایلیه بابرودی', 'Christopher Eleyh Babrudy', './team/christopher-3d-v2.webp'],
   ['آراد دباغی', 'Arad Dabaghi', './team/arad-3d.webp'],
   ['مهراد توفیقی', 'Mehrad Tofighi', './team/mehrad-3d.webp'],
-  ['آرکان محمدی', 'Arkan Mohammadi', './team/arkan-3d-v2.webp'],
+  ['آرکان محمدی', 'Arkan Mohammadi', './team/arkan-3d-v3.webp'],
 ];
 
 const faq = [
